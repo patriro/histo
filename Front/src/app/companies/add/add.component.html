@@ -1,0 +1,123 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand m-2" routerLink="/societes"> <i class="bi bi-arrow-return-left mx-2">
+        </i>Retour </a>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <form class="row g-3" [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+            <div class="col-6 mt-5">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <i class="bi bi-building" style="font-size: 60px;"></i>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">Créer une nouvelle société</h5>
+                                <div class="col-12">
+                                    <label for="nom" class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="nom" formControlName="name"
+                                        [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+                                </div>
+                                <div class="col-12">
+                                    <label for="siren" class="form-label">Numéro SIREN</label>
+                                    <input type="text" class="form-control" id="siren" formControlName="siren"
+                                        [ngClass]="{ 'is-invalid': submitted && f['siren'].errors }">
+                                </div>
+                                <div class="col-12">
+                                    <label for="registrationDate" class="form-label">Date d'immatriculation</label>
+                                    <input type="date" class="form-control" id="registrationDate"
+                                        formControlName="registrationDate"
+                                        [ngClass]="{ 'is-invalid': submitted && f['registrationDate'].errors }">
+                                </div>
+                                <div class="col-12">
+                                    <label for="capital" class="form-label">Capital</label>
+                                    <input type="number" class="form-control" id="capital" formControlName="capital"
+                                        [ngClass]="{ 'is-invalid': submitted && f['capital'].errors }">
+                                </div>
+                                <div class="col-12" formGroupName="legalStatus">
+                                    <label for="status" class="form-label">Statut juridique</label>
+                                    <select id="status" class="form-select" formControlName="id"
+                                        [ngClass]="{ 'is-invalid': submitted && f['legalStatus'].errors }">
+                                        <option disabled selected value="undefined">Select an Option</option>
+                                        <option *ngFor="let labelStatus of legalLabelStatuses; let x = index"
+                                            [value]="labelStatus.id">
+                                            {{ labelStatus.label }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 mt-5">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <i class="bi bi-geo-alt" style="font-size: 60px;"></i>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">Ajouter une ou plusieurs addresses</h5>
+                                <button type="button" class="btn btn-dark" (click)="addMoreAddress()">
+                                    <i class="bi bi-plus-circle-fill"></i>
+                                    Ajouter une adresse
+                                </button>
+                                <div formArrayName="addresses" class="border border-1 mt-2"
+                                    *ngFor="let address of addressFormArray.controls; let i = index">
+                                    <ng-container [formGroupName]="i">
+                                        <div class="row p-2">
+                                            <div class="col-2">
+                                                <label for="number" class="form-label">N°</label>
+                                                <input type="text" class="form-control" id="number"
+                                                    formControlName="number"
+                                                    [ngClass]="{ 'is-invalid': submitted && f2(i, 'number') }">
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="roadType" class="form-label">Voie</label>
+                                                <input type="text" class="form-control" id="roadType"
+                                                    formControlName="roadType"
+                                                    [ngClass]="{ 'is-invalid': submitted && f2(i, 'roadType') }">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="roadName" class="form-label">Nom</label>
+                                                <input type="text" class="form-control" id="roadName"
+                                                    formControlName="roadName"
+                                                    [ngClass]="{ 'is-invalid': submitted && f2(i, 'roadName') }">
+                                            </div>
+                                        </div>
+                                        <div class="row p-2">
+                                            <div class="col-6">
+                                                <label for="city" class="form-label">Ville</label>
+                                                <input type="text" class="form-control" id="city" formControlName="city"
+                                                    [ngClass]="{ 'is-invalid': submitted && f2(i, 'city') }">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="postCode" class="form-label">Code postale</label>
+                                                <input type="number" class="form-control" id="postCode"
+                                                    placeholder="ex : 37000" formControlName="postCode"
+                                                    [ngClass]="{ 'is-invalid': submitted && f2(i, 'postCode') }">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-danger m-3 p-2" (click)="removeAddress(i)">
+                                            <i class="bi bi-plus-circle-fill"></i>
+                                            Supprimer cette adresse
+                                        </button>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-3">
+                    <div class="d-grid gap-2">
+                        <input type="submit" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

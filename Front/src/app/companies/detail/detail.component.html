@@ -1,0 +1,120 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand m-2" routerLink="/societes"> <i class="bi bi-arrow-return-left mx-2">
+        </i>Retour </a>
+</nav>
+<div class="container px-4 py-5" id="icon-grid" *ngIf="company">
+    <div class="row justify-content-between">
+        <div class="col-4">
+            <h2>{{ company.name }}</h2>
+        </div>
+        <div class="col-4">
+            <h2>
+                <button type="button" class="btn btn-warning" [routerLink]="['/societes/edit', company.id]">
+                    <i class="bi bi-pencil-square rounded-circle" style="font-size: 30px;"></i>
+                </button>
+                <button type="button" class="btn btn-danger mx-4" (click)="openModal(content, company.id)">
+                    <i class="bi bi-trash rounded-circle" style="font-size: 30px;"></i>
+                </button>
+
+                <ng-template #content let-modal>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Suppression de la société</h4>
+                        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+                    </div>
+                    <div class="modal-body">
+                        Voulez-vous réelement supprimer la société ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark btn-danger"
+                            (click)="modal.close(true)">Oui</button>
+                    </div>
+                </ng-template>
+            </h2>
+        </div>
+        <hr>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-5 g-4 py-5">
+            <div class="col d-flex align-items-start">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-geo-alt"></i>
+                        Adresses
+                    </h4>
+                    <p>
+                        <span *ngFor="let address of company.addresses">
+                            {{ address.number }} {{ address.roadType }} {{ address.roadName }}, {{ address.postCode }}
+                            {{ address.city }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-info-circle-fill"></i>
+                        Siren
+                    </h4>
+                    <p>{{ company.siren }}</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-coin"></i>
+                        Capital
+                    </h4>
+                    <p>{{ company.capital | currency:'EUR' }}</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-calendar-check"></i>
+                        Immatriculation
+                    </h4>
+                    <p>{{ company.registrationDate | date:'longDate':'+0200':'fr' }}</p>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+                <div>
+                    <h4 class="fw-bold mb-0">
+                        <i class="bi bi-bank"></i>
+                        Statut juridique
+                    </h4>
+                    <p>{{ company.legalStatus.label }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-1 g-4 py-5">
+            <div class="col d-flex justify-content-center align-items-center">
+                <h4 class="fw-bold mb-0">
+                    <i class="bi bi-clock-history"></i>
+                    Historique
+                </h4>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Action</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Siren</th>
+                        <th scope="col">Immatriculation</th>
+                        <th scope="col">Capital</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Date de modification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let history of historyCompany">
+                        <th>{{ history['action'] }}</th>
+                        <th>{{ history['version'] }}</th>
+                        <th>{{ history['data']['siren'] ?? '-'}}</th>
+                        <th>{{ history['data']['registrationDate'] ?? '-' | date: 'mediumDate':'+0200':'fr'}}</th>
+                        <th>{{ history['data']['capital'] ?? '-'}}</th>
+                        <th>{{ history['data']['legalStatus'] ? history['data']['legalStatus']['label'] : '-' }}</th>
+                        <th>{{ history['loggedAt'] | date: 'dd/M/YYY, hh:mm':'+0200':'fr'}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

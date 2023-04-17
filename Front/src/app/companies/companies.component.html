@@ -1,0 +1,34 @@
+<nav class="navbar sticky-top navbar-light societe">
+    <div class="container-fluid justify-content-center">
+        <span class="navbar-brand">Sociétés</span>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row my-5">
+        <div class="col-4">
+            <button routerLink="ajout" class="btn btn-primary" type="button">Ajouter une société</button>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Siren</th>
+                <th scope="col">Date d'immatriculation</th>
+                <th scope="col">Capital</th>
+                <th scope="col">Statut juridique</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="cursor: pointer;" *ngFor="let company of companies" (click)="companyDetail(company.id)">
+                <th>{{ company.name }}</th>
+                <td>{{ company.siren }}</td>
+                <td>{{ company.registrationDate | date: 'mediumDate':'+0200':'fr' }}</td>
+                <td>{{ company.capital | currency: 'EUR'}}</td>
+                <td>{{ company.legalStatus.label }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

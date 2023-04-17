@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  php:
+    container_name: histo_php
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=histo
+      - DB_USER=admin
+      - DB_PASS=admin
+    volumes:
+      - ./Back:/var/www/Back:delegated
+      # - /var/www/Back/vendor
+    depends_on:
+      - postgres
+    ports:
+      - 9000:9000
+
+  # cron:
+  #   container_name: histo_cron
+  #   build:
+  #     context: .
+  #     dockerfile: .docker/cron/Dockerfile
+  #   volumes:
+  #     - ./Back:/var/www/Back/
+
+  angular:
+    container_name: histo_angular
+    build:
+      context: .
+      dockerfile: .docker/angular/Dockerfile
+    ports:
+      - 4200:4200
+    volumes:
+      - ./Front:/var/www/Front/
+
+  nginx:
+    container_name: histo_nginx
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - ./Back:/var/www/Back
+      - .docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - .docker/nginx/sites/:/etc/nginx/sites-available
+      - .docker/nginx/conf.d/:/etc/nginx/conf.d
+      - ./logs:/var/log/nginx
+    depends_on:
+      - php
+    ports:
+      - 8081:80
+      - 443:443
+
+  postgres:
+    container_name: histo_postgres
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_DB: histo
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: histo_adminer
+    restart: always
+    ports:
+      - 4003:8080
+
+volumes:
+  dbdata:

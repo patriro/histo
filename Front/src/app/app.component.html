@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-3">
+        <aside>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link waves-light" routerLinkActive="active-link" routerLink="/accueil">
+                        <i class="bi bi-house-door-fill" style="width: 40px;font-size: 25px;"></i>
+                        <span class="align-self-center">Accueil</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-light" routerLinkActive="active-link" routerLink="/societes">
+                        <i class="bi bi-building" style="width: 40px;font-size: 25px;"></i>
+                        <span class="align-self-center">Sociétés</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <div class="col-9">
+        <router-outlet></router-outlet>
+    </div>
+</div>
